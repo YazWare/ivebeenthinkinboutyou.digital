@@ -20,13 +20,14 @@
     }
 
     html, body {
-      height: 100%;
+      min-height: 100%;
       background: var(--bg);
       color: var(--text);
       font-family: 'Courier Prime', monospace;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 2rem 1rem;
     }
 
     body::before {
@@ -38,7 +39,7 @@
       opacity: 0.5;
     }
 
-    /* ── AUTH SCREEN ── */
+    /* AUTH */
     #auth-screen {
       display: flex;
       flex-direction: column;
@@ -69,7 +70,6 @@
       width: 16ch;
       transition: border-color 0.3s;
     }
-
     #auth-screen input:focus { border-color: var(--accent); }
 
     #auth-screen .error {
@@ -90,18 +90,16 @@
       cursor: pointer;
       transition: all 0.2s;
     }
+    #auth-screen button:hover { border-color: var(--accent); color: var(--accent); }
 
-    #auth-screen button:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* ── ADMIN PANEL ── */
+    /* ADMIN PANEL */
     #admin-panel {
       display: none;
       flex-direction: column;
       align-items: center;
       gap: 2.5rem;
+      width: 100%;
+      max-width: 360px;
       animation: fadeIn 0.8s ease;
     }
 
@@ -122,7 +120,6 @@
       line-height: 1;
       text-align: center;
     }
-
     .current-count span {
       display: block;
       font-family: 'Courier Prime', monospace;
@@ -141,11 +138,7 @@
       width: 100%;
     }
 
-    .row {
-      display: flex;
-      gap: 0.75rem;
-      align-items: center;
-    }
+    .row { display: flex; gap: 0.75rem; align-items: center; }
 
     .controls input[type="number"] {
       background: transparent;
@@ -160,10 +153,8 @@
       -moz-appearance: textfield;
       transition: border-color 0.3s;
     }
-
     .controls input::-webkit-outer-spin-button,
     .controls input::-webkit-inner-spin-button { -webkit-appearance: none; }
-
     .controls input:focus { border-color: var(--accent); }
 
     .btn {
@@ -177,18 +168,10 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-
     .btn:hover { border-color: var(--accent); color: var(--accent); }
     .btn.danger:hover { border-color: var(--red); color: var(--red); }
-
-    .btn.set-btn {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .btn.set-btn:hover {
-      background: var(--accent);
-      color: var(--bg);
-    }
+    .btn.set-btn { border-color: var(--accent); color: var(--accent); }
+    .btn.set-btn:hover { background: var(--accent); color: var(--bg); }
 
     .feedback {
       font-size: 0.7rem;
@@ -203,6 +186,56 @@
       height: 1px;
       background: var(--muted);
       opacity: 0.3;
+    }
+
+    /* NOTES SECTION */
+    .section-sep {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--muted), transparent);
+      opacity: 0.3;
+    }
+
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .notes-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .notes-section textarea {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--muted);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      padding: 0.75rem 1rem;
+      outline: none;
+      resize: none;
+      transition: border-color 0.3s;
+      min-height: 90px;
+    }
+    .notes-section textarea:focus { border-color: var(--accent); }
+    .notes-section textarea::placeholder { color: var(--muted); opacity: 0.6; }
+
+    .note-feedback {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      min-height: 1em;
+      color: var(--green);
+      text-align: center;
     }
 
     @keyframes fadeIn {
@@ -249,14 +282,23 @@
   </div>
 
   <div class="feedback" id="feedback"></div>
+
+  <!-- THOUGHTS -->
+  <div class="section-sep"></div>
+  <div class="section-label">what were you thinking about</div>
+
+  <div class="notes-section">
+    <textarea id="note-input" placeholder="i was thinking about…" rows="3"></textarea>
+    <button class="btn set-btn" onclick="saveNote()">save thought</button>
+    <div class="note-feedback" id="note-feedback"></div>
+  </div>
 </div>
 
 <!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getDatabase, ref, onValue, set, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  // ── SAME FIREBASE CONFIG AS index.html ──
   const firebaseConfig = {
     apiKey: "AIzaSyA96e5SPjrjwQfM0wTYIWmN17fwmllQjsw",
     authDomain: "ivebeenthinkinboutyou.firebaseapp.com",
@@ -266,19 +308,16 @@
     messagingSenderId: "51379647443",
     appId: "1:51379647443:web:03205ec0ee3b75d1d87526"
   };
-  // ────────────────────────────────────────
 
-  // ── CHANGE THESE ──
-  const ADMIN_PASSWORD  = "291208";   // password for the form
-  // ──────────────────
+  const ADMIN_PASSWORD = "291208";
 
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
   const thoughtsRef = ref(db, 'thoughts');
+  const notesRef    = ref(db, 'notes');
 
   let currentCount = 0;
 
-  // listen
   onValue(thoughtsRef, (snap) => {
     const data = snap.val() || {};
     currentCount = data.count ?? 0;
@@ -296,7 +335,13 @@
     setTimeout(() => el.textContent = '', 2000);
   }
 
-  // expose to window
+  function showNoteFeedback(msg, color = 'var(--green)') {
+    const el = document.getElementById('note-feedback');
+    el.style.color = color;
+    el.textContent = msg;
+    setTimeout(() => el.textContent = '', 2000);
+  }
+
   window.checkPassword = () => {
     const val = document.getElementById('pw-input').value;
     if (val === ADMIN_PASSWORD) {
@@ -327,12 +372,21 @@
     await write(0);
     showFeedback('reset.', 'var(--red)');
   };
+
+  window.saveNote = async () => {
+    const text = document.getElementById('note-input').value.trim();
+    if (!text) return;
+    await push(notesRef, { text, ts: new Date().toISOString() });
+    document.getElementById('note-input').value = '';
+    showNoteFeedback('saved ✓');
+  };
 </script>
 
 <script>
-  // allow enter key on password
   document.getElementById('pw-input')
     .addEventListener('keydown', e => { if (e.key === 'Enter') window.checkPassword(); });
+  document.getElementById('note-input')
+    .addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.saveNote(); } });
 </script>
 
 </body>
