@@ -12,11 +12,11 @@
 
     :root {
       --bg: #0a0705;
-      --surface: #110e0b;
       --text: #e8ddd0;
       --muted: #6b5f55;
       --accent: #c8a97e;
       --red: #8b3a3a;
+      --her: #7a8b6b;
     }
 
     html, body {
@@ -29,41 +29,29 @@
 
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 100;
-      opacity: 0.6;
+      pointer-events: none; z-index: 100; opacity: 0.6;
     }
-
     body::after {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
-      pointer-events: none;
-      z-index: 99;
+      pointer-events: none; z-index: 99;
     }
 
     .scene {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
     }
 
+    /* particles */
     .particles { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
     .particle {
-      position: absolute;
-      width: 1px; height: 1px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: drift linear infinite;
-      opacity: 0;
+      position: absolute; width: 1px; height: 1px;
+      background: var(--accent); border-radius: 50%;
+      animation: drift linear infinite; opacity: 0;
     }
     @keyframes drift {
       0%   { transform: translateY(110vh) translateX(0); opacity: 0; }
@@ -72,90 +60,56 @@
       100% { transform: translateY(-10vh) translateX(var(--dx)); opacity: 0; }
     }
 
-    .count-wrap {
-      position: relative;
-      opacity: 0;
-      animation: fadeUp 1.4s ease forwards 0.6s;
-    }
-
+    .count-wrap { opacity: 0; animation: fadeUp 1.4s ease forwards 0.6s; }
     .count {
       font-size: clamp(6rem, 20vw, 14rem);
-      font-weight: 300;
-      line-height: 1;
-      color: var(--text);
-      letter-spacing: -0.02em;
-      font-style: italic;
-      position: relative;
+      font-weight: 300; line-height: 1;
+      color: var(--text); letter-spacing: -0.02em;
+      font-style: italic; position: relative;
     }
     .count::before {
-      content: attr(data-n);
-      position: absolute;
-      inset: 0;
-      color: var(--accent);
-      filter: blur(40px);
-      opacity: 0.15;
-      z-index: -1;
+      content: attr(data-n); position: absolute; inset: 0;
+      color: var(--accent); filter: blur(40px); opacity: 0.15; z-index: -1;
     }
 
     .divider {
-      width: 1px;
-      height: 4rem;
+      width: 1px; height: 4rem;
       background: linear-gradient(to bottom, transparent, var(--muted), transparent);
-      margin: 1.5rem auto;
-      opacity: 0;
+      margin: 1.5rem auto; opacity: 0;
       animation: fadeUp 1.4s ease forwards 0.9s;
     }
 
     .label-bottom {
       font-size: clamp(0.85rem, 2.5vw, 1.1rem);
-      font-style: italic;
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.8;
-      max-width: 28ch;
-      opacity: 0;
-      animation: fadeUp 1.4s ease forwards 1.1s;
+      font-style: italic; color: var(--muted);
+      text-align: center; line-height: 1.8; max-width: 28ch;
+      opacity: 0; animation: fadeUp 1.4s ease forwards 1.1s;
     }
     .label-bottom em { color: var(--accent); font-style: normal; }
 
-    /* ── THOUGHTS BUTTON ── */
     .thoughts-btn {
       margin-top: 2.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: clamp(0.85rem, 2vw, 1rem);
-      letter-spacing: 0.1em;
-      padding: 0.65rem 1.6rem;
-      cursor: pointer;
-      opacity: 0;
+      display: flex; align-items: center; gap: 0.6rem;
+      background: transparent; border: 1px solid var(--accent);
+      color: var(--accent); font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: clamp(0.85rem, 2vw, 1rem);
+      letter-spacing: 0.1em; padding: 0.65rem 1.6rem;
+      cursor: pointer; opacity: 0;
       animation: fadeUp 1.4s ease forwards 1.4s;
       transition: background 0.25s, box-shadow 0.25s;
-      position: relative;
-      z-index: 10;
+      position: relative; z-index: 10;
     }
     .thoughts-btn::before {
-      content: '';
-      position: absolute;
-      inset: -4px;
-      border: 1px solid rgba(200,169,126,0.15);
-      pointer-events: none;
+      content: ''; position: absolute; inset: -4px;
+      border: 1px solid rgba(200,169,126,0.15); pointer-events: none;
     }
     .thoughts-btn:hover {
       background: rgba(200,169,126,0.08);
       box-shadow: 0 0 28px rgba(200,169,126,0.18);
     }
     .thoughts-btn .btn-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2s ease infinite;
-      flex-shrink: 0;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent); animation: pulse 2s ease infinite; flex-shrink: 0;
     }
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
@@ -163,23 +117,15 @@
     }
 
     .last-updated {
-      position: fixed;
-      bottom: 2rem; right: 2.5rem;
-      font-family: 'Courier Prime', monospace;
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.15em;
-      opacity: 0;
-      animation: fadeUp 1.4s ease forwards 1.5s;
+      position: fixed; bottom: 2rem; right: 2.5rem;
+      font-family: 'Courier Prime', monospace; font-size: 0.65rem;
+      color: var(--muted); letter-spacing: 0.15em;
+      opacity: 0; animation: fadeUp 1.4s ease forwards 1.5s;
     }
-
     .corner-mark {
-      position: fixed;
-      top: 2rem; left: 2.5rem;
-      width: 4px; height: 4px;
-      border-radius: 50%;
-      background: var(--red);
-      opacity: 0;
+      position: fixed; top: 2rem; left: 2.5rem;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--red); opacity: 0;
       animation: fadeUp 1s ease forwards 2s;
     }
 
@@ -187,7 +133,6 @@
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
     .count.tick { animation: tick 0.3s ease; }
     @keyframes tick {
       0%   { transform: scale(1); }
@@ -195,164 +140,241 @@
       100% { transform: scale(1); }
     }
 
-    /* ── MODAL OVERLAY ── */
+    /* ── OVERLAY ── */
     .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(10, 7, 5, 0.92);
-      backdrop-filter: blur(8px);
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
+      position: fixed; inset: 0;
+      background: rgba(10,7,5,0.93);
+      backdrop-filter: blur(10px);
+      z-index: 200; display: flex;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
       transition: opacity 0.4s ease;
     }
-    .overlay.open {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .modal {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.4rem;
-      max-width: 340px;
-      width: 90%;
-    }
-
-    .modal-title {
-      font-size: 1.05rem;
-      font-style: italic;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-      text-align: center;
-    }
-    .modal-title em { color: var(--accent); font-style: normal; }
-
-    .modal-hint {
-      font-family: 'Courier Prime', monospace;
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .modal input {
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid var(--muted);
-      color: var(--text);
-      font-family: 'Courier Prime', monospace;
-      font-size: 1rem;
-      padding: 0.5rem 0;
-      text-align: center;
-      letter-spacing: 0.3em;
-      outline: none;
-      width: 16ch;
-      transition: border-color 0.3s;
-    }
-    .modal input:focus { border-color: var(--accent); }
-
-    .modal-error {
-      font-family: 'Courier Prime', monospace;
-      font-size: 0.7rem;
-      color: var(--red);
-      letter-spacing: 0.1em;
-      min-height: 1em;
-    }
-
-    .modal-btn {
-      background: transparent;
-      border: 1px solid var(--muted);
-      color: var(--muted);
-      font-family: 'Courier Prime', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      padding: 0.5rem 1.5rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .modal-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .overlay.open { opacity: 1; pointer-events: all; }
 
     .modal-close {
-      position: fixed;
-      top: 1.5rem; right: 2rem;
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-family: 'Courier Prime', monospace;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: color 0.2s;
-      z-index: 201;
+      position: fixed; top: 1.5rem; right: 2rem;
+      background: none; border: none; color: var(--muted);
+      font-family: 'Courier Prime', monospace; font-size: 1rem;
+      cursor: pointer; transition: color 0.2s; z-index: 201;
     }
     .modal-close:hover { color: var(--text); }
 
-    /* ── THOUGHTS LIST ── */
-    .thoughts-list {
-      width: 100%;
-      max-height: 60vh;
-      overflow-y: auto;
-      display: flex;
+    /* gate modals */
+    .gate {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 1.4rem;
+      max-width: 340px; width: 90%;
+    }
+    .gate-title {
+      font-size: 1.05rem; font-style: italic;
+      color: var(--muted); letter-spacing: 0.05em; text-align: center;
+    }
+    .gate-title em { color: var(--accent); font-style: normal; }
+    .gate-hint {
+      font-family: 'Courier Prime', monospace; font-size: 0.65rem;
+      color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase;
+    }
+    .gate input {
+      background: transparent; border: none;
+      border-bottom: 1px solid var(--muted);
+      color: var(--text); font-family: 'Courier Prime', monospace;
+      font-size: 1rem; padding: 0.5rem 0; text-align: center;
+      letter-spacing: 0.3em; outline: none; width: 16ch;
+      transition: border-color 0.3s;
+    }
+    .gate input:focus { border-color: var(--accent); }
+    .gate-error {
+      font-family: 'Courier Prime', monospace; font-size: 0.7rem;
+      color: var(--red); letter-spacing: 0.1em; min-height: 1em;
+    }
+    .gate-btn {
+      background: transparent; border: 1px solid var(--muted);
+      color: var(--muted); font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem; letter-spacing: 0.2em;
+      padding: 0.5rem 1.5rem; cursor: pointer; transition: all 0.2s;
+    }
+    .gate-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── THOUGHTS PANEL ── */
+    #thoughts-panel {
+      display: none;
       flex-direction: column;
-      gap: 1.4rem;
-      padding-right: 0.5rem;
-    }
-    .thoughts-list::-webkit-scrollbar { width: 2px; }
-    .thoughts-list::-webkit-scrollbar-thumb { background: var(--muted); }
-
-    .thought-entry {
-      border-left: 1px solid rgba(107,95,85,0.4);
-      padding-left: 1rem;
+      width: min(520px, 92vw);
+      max-height: 82vh;
+      gap: 0;
     }
 
-    .thought-date {
+    .panel-header {
       font-family: 'Courier Prime', monospace;
-      font-size: 0.6rem;
-      color: var(--muted);
-      letter-spacing: 0.2em;
-      margin-bottom: 0.35rem;
+      font-size: 0.6rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--muted);
+      text-align: center; padding-bottom: 1.2rem;
+      border-bottom: 1px solid rgba(107,95,85,0.2);
+      margin-bottom: 0;
     }
 
+    /* tabs */
+    .tabs {
+      display: flex; border-bottom: 1px solid rgba(107,95,85,0.2);
+    }
+    .tab {
+      flex: 1; padding: 0.75rem 0;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.62rem; letter-spacing: 0.2em;
+      text-transform: uppercase; text-align: center;
+      color: var(--muted); cursor: pointer;
+      border-bottom: 1px solid transparent;
+      margin-bottom: -1px; transition: all 0.2s;
+    }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab:hover:not(.active) { color: var(--text); }
+
+    .tab-content { display: none; flex-direction: column; overflow: hidden; flex: 1; }
+    .tab-content.active { display: flex; }
+
+    /* scrollable list */
+    .thoughts-scroll {
+      overflow-y: auto; flex: 1; padding: 1rem 0;
+      display: flex; flex-direction: column; gap: 0.6rem;
+    }
+    .thoughts-scroll::-webkit-scrollbar { width: 2px; }
+    .thoughts-scroll::-webkit-scrollbar-thumb { background: var(--muted); }
+
+    /* accordion day group */
+    .day-group { border: 1px solid rgba(107,95,85,0.2); }
+    .day-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.65rem 1rem; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .day-header:hover { background: rgba(200,169,126,0.04); }
+    .day-header-left { display: flex; align-items: center; gap: 0.75rem; }
+    .day-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.62rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .day-count {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.55rem; color: var(--muted);
+      background: rgba(107,95,85,0.2);
+      padding: 0.1rem 0.4rem; border-radius: 2px;
+    }
+    .day-arrow {
+      font-size: 0.6rem; color: var(--muted);
+      transition: transform 0.25s; user-select: none;
+    }
+    .day-group.open .day-arrow { transform: rotate(90deg); }
+
+    .day-body {
+      display: none; flex-direction: column;
+      border-top: 1px solid rgba(107,95,85,0.15);
+    }
+    .day-group.open .day-body { display: flex; }
+
+    /* individual thought */
+    .thought-item {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid rgba(107,95,85,0.1);
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .thought-item:last-child { border-bottom: none; }
+
+    .thought-meta {
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .thought-num {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.55rem; letter-spacing: 0.15em;
+      color: var(--accent); opacity: 0.7; flex-shrink: 0;
+    }
+    .thought-time {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.58rem; color: var(--muted); letter-spacing: 0.1em;
+    }
     .thought-text {
-      font-style: italic;
-      font-size: 1rem;
-      color: var(--text);
-      line-height: 1.65;
+      font-style: italic; font-size: 1rem;
+      color: var(--text); line-height: 1.65;
+      padding-left: 2.2rem;
+    }
+    .thought-img {
+      padding-left: 2.2rem; margin-top: 0.25rem;
+    }
+    .thought-img img {
+      max-width: 100%; max-height: 200px;
+      object-fit: cover; opacity: 0.85;
+      border: 1px solid rgba(107,95,85,0.3);
     }
 
-    .thoughts-empty {
-      font-style: italic;
-      color: var(--muted);
-      font-size: 0.9rem;
-      text-align: center;
+    /* her notes */
+    .her-note-item {
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid rgba(107,95,85,0.1);
+      border-left: 2px solid var(--her);
+      display: flex; flex-direction: column; gap: 0.4rem;
     }
-
-    .list-title {
+    .her-note-item:last-child { border-bottom: none; }
+    .her-note-date {
       font-family: 'Courier Prime', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-align: center;
+      font-size: 0.58rem; color: var(--her); letter-spacing: 0.1em; opacity: 0.8;
+    }
+    .her-note-text {
+      font-style: italic; font-size: 1rem;
+      color: var(--text); line-height: 1.65;
     }
 
-    #thoughts-modal { max-width: 420px; }
+    /* add note area */
+    .add-note-bar {
+      padding: 0.75rem 0 0;
+      border-top: 1px solid rgba(107,95,85,0.2);
+      display: flex; justify-content: center;
+    }
+    .add-note-toggle {
+      background: transparent; border: 1px solid rgba(107,95,85,0.4);
+      color: var(--muted); font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 0.85rem; letter-spacing: 0.1em;
+      padding: 0.45rem 1.2rem; cursor: pointer; transition: all 0.2s;
+    }
+    .add-note-toggle:hover { border-color: var(--accent); color: var(--accent); }
 
-  .add-note-btn {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 0.85rem;
-    letter-spacing: 0.1em;
-    border-color: rgba(107,95,85,0.4);
-    margin-top: 0.5rem;
-  }
-  .add-note-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .add-note-form {
+      display: none; flex-direction: column;
+      gap: 0.8rem; padding: 0.75rem 0 0; width: 100%;
+    }
+    .add-note-form.open { display: flex; }
 
-  #inline-note-input:focus { border-color: var(--accent); }
+    .add-note-form textarea {
+      width: 100%; background: transparent;
+      border: 1px solid var(--muted);
+      color: var(--text); font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 0.95rem; line-height: 1.7;
+      padding: 0.65rem 0.9rem; outline: none; resize: none;
+      transition: border-color 0.3s; min-height: 70px;
+    }
+    .add-note-form textarea:focus { border-color: var(--accent); }
+    .add-note-form textarea::placeholder { color: var(--muted); opacity: 0.6; }
+
+    .add-note-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+    .btn-save-note {
+      background: transparent; border: 1px solid var(--accent);
+      color: var(--accent); font-family: 'Courier Prime', monospace;
+      font-size: 0.7rem; letter-spacing: 0.15em;
+      padding: 0.4rem 1rem; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-save-note:hover { background: var(--accent); color: var(--bg); }
+
+    .note-fb {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.65rem; color: #4a7a5a; letter-spacing: 0.1em;
+      text-align: right; min-height: 1em;
+    }
+
+    .empty-state {
+      font-style: italic; color: var(--muted);
+      font-size: 0.9rem; text-align: center;
+      padding: 2rem 0;
+    }
   </style>
 </head>
 <body>
@@ -364,14 +386,11 @@
   <div class="count-wrap">
     <div class="count" id="count" data-n="…">…</div>
   </div>
-
   <div class="divider"></div>
-
   <div class="label-bottom">
     times i thought of <em>you</em><br>
     since i made this <em>(april 1)</em>
   </div>
-
   <button class="thoughts-btn" onclick="openModal()">
     <span class="btn-dot"></span>
     what was i thinking about ?
@@ -380,46 +399,66 @@
 
 <div class="last-updated" id="last-updated"></div>
 
-<!-- MODAL -->
+<!-- OVERLAY -->
 <div class="overlay" id="overlay">
   <button class="modal-close" onclick="closeModal()">✕</button>
 
-  <!-- gate 1: birthdate -->
-  <div class="modal" id="gate1">
-    <div class="modal-title">what's <em>your</em> birthdate ?</div>
-    <div class="modal-hint">dd mm yy</div>
+  <!-- gate 1 -->
+  <div class="gate" id="gate1">
+    <div class="gate-title">what's <em>your</em> birthdate ?</div>
+    <div class="gate-hint">dd mm yy</div>
     <input type="password" id="g1-input" placeholder="· · · · · ·" autocomplete="off" inputmode="numeric"/>
-    <div class="modal-error" id="g1-error"></div>
-    <button class="modal-btn" onclick="checkGate1()">enter</button>
+    <div class="gate-error" id="g1-error"></div>
+    <button class="gate-btn" onclick="checkGate1()">enter</button>
   </div>
 
-  <!-- gate 2: planet -->
-  <div class="modal" id="gate2" style="display:none">
-    <div class="modal-title">our <em>planet</em></div>
-    <div class="modal-hint">hint — our planet</div>
+  <!-- gate 2 -->
+  <div class="gate" id="gate2" style="display:none">
+    <div class="gate-title">our <em>planet</em></div>
+    <div class="gate-hint">hint — our planet</div>
     <input type="text" id="g2-input" placeholder="· · · · · ·" autocomplete="off"/>
-    <div class="modal-error" id="g2-error"></div>
-    <button class="modal-btn" onclick="checkGate2()">enter</button>
+    <div class="gate-error" id="g2-error"></div>
+    <button class="gate-btn" onclick="checkGate2()">enter</button>
   </div>
 
-  <!-- thoughts list -->
-  <div class="modal" id="thoughts-modal" style="display:none">
-    <div class="list-title" id="thoughts-header">thoughts</div>
-    <div class="thoughts-list" id="thoughts-list">
-      <div class="thoughts-empty">nothing yet…</div>
+  <!-- thoughts panel -->
+  <div id="thoughts-panel">
+    <div class="panel-header" id="panel-header">thoughts</div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('his')">his thoughts</div>
+      <div class="tab" onclick="switchTab('hers')">her notes</div>
     </div>
-    <button class="modal-btn add-note-btn" onclick="showAddNote()">+ add a note</button>
-    <div id="add-note-area" style="display:none; width:100%; display:none; flex-direction:column; align-items:center; gap:0.8rem;">
-      <textarea id="inline-note-input" placeholder="i was thinking about…" rows="3" style="width:100%;background:transparent;border:1px solid var(--muted);color:var(--text);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.95rem;line-height:1.7;padding:0.75rem 1rem;outline:none;resize:none;transition:border-color 0.3s;"></textarea>
-      <button class="modal-btn" style="border-color:var(--accent);color:var(--accent);" onclick="saveInlineNote()">save</button>
-      <div id="inline-note-feedback" style="font-family:'Courier Prime',monospace;font-size:0.7rem;letter-spacing:0.15em;min-height:1em;color:#4a7a5a;"></div>
+
+    <!-- his thoughts tab -->
+    <div class="tab-content active" id="tab-his">
+      <div class="thoughts-scroll" id="his-list">
+        <div class="empty-state">nothing yet…</div>
+      </div>
+    </div>
+
+    <!-- her notes tab -->
+    <div class="tab-content" id="tab-hers">
+      <div class="thoughts-scroll" id="her-list">
+        <div class="empty-state">nothing yet…</div>
+      </div>
+      <div class="add-note-bar">
+        <button class="add-note-toggle" onclick="toggleNoteForm()">+ leave a note</button>
+      </div>
+      <div class="add-note-form" id="add-note-form">
+        <textarea id="her-note-input" placeholder="write something…" rows="3"></textarea>
+        <div class="add-note-actions">
+          <button class="btn-save-note" onclick="saveHerNote()">save</button>
+        </div>
+        <div class="note-fb" id="note-fb"></div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Firebase -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { initializeApp }      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
@@ -435,79 +474,123 @@
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
 
-  const countEl = document.getElementById('count');
-  const lastEl  = document.getElementById('last-updated');
-
-  onValue(ref(db, 'thoughts'), (snap) => {
+  // count
+  onValue(ref(db, 'thoughts'), snap => {
     const data = snap.val() || {};
     const n    = data.count ?? 0;
     const ts   = data.lastUpdated ?? null;
-
+    const countEl = document.getElementById('count');
     countEl.textContent = n.toLocaleString();
     countEl.setAttribute('data-n', n.toLocaleString());
     countEl.classList.remove('tick');
     void countEl.offsetWidth;
     countEl.classList.add('tick');
-
     if (ts) {
       const d = new Date(ts);
-      lastEl.textContent = `last — ${d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })}`;
+      document.getElementById('last-updated').textContent =
+        `last — ${d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })}`;
     }
   });
 
-  window.saveInlineNote = async () => {
-    const text = document.getElementById('inline-note-input').value.trim();
-    if (!text) return;
-    await push(ref(db, 'notes'), { text, ts: new Date().toISOString() });
-    document.getElementById('inline-note-input').value = '';
-    const fb = document.getElementById('inline-note-feedback');
-    fb.textContent = 'saved ✓';
-    setTimeout(() => fb.textContent = '', 2000);
-    document.getElementById('add-note-area').style.display = 'none';
-  };
-
-  window.loadThoughts = () => {
-    onValue(ref(db, 'notes'), (snap) => {
-      const listEl = document.getElementById('thoughts-list');
+  // load his thoughts (notes) — grouped by day, numbered globally oldest→newest
+  window.loadHisThoughts = () => {
+    onValue(ref(db, 'notes'), snap => {
+      const listEl = document.getElementById('his-list');
       const data   = snap.val();
+      if (!data) { listEl.innerHTML = '<div class="empty-state">nothing yet…</div>'; return; }
 
-      if (!data) {
-        listEl.innerHTML = '<div class="thoughts-empty">nothing yet…</div>';
-        return;
-      }
+      const entries = Object.values(data).sort((a,b) => new Date(a.ts) - new Date(b.ts));
 
-      const entries = Object.values(data).sort((a, b) => new Date(b.ts) - new Date(a.ts));
-      listEl.innerHTML = '';
-
-      entries.forEach(entry => {
-        const d       = new Date(entry.ts);
-        const dateStr = d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
-        const timeStr = d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
-
-        const el = document.createElement('div');
-        el.className = 'thought-entry';
-        el.innerHTML = `
-          <div class="thought-date">${dateStr} — ${timeStr}</div>
-          <div class="thought-text">${entry.text}</div>
-        `;
-        listEl.appendChild(el);
+      // group by calendar date
+      const groups = {};
+      entries.forEach((e, idx) => {
+        e._num = idx + 1;
+        const day = new Date(e.ts).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+        if (!groups[day]) groups[day] = [];
+        groups[day].push(e);
       });
 
-      document.getElementById('thoughts-header').textContent =
+      listEl.innerHTML = '';
+      const days = Object.keys(groups).reverse(); // most recent day first
+      days.forEach((day, di) => {
+        const items = groups[day];
+        const grp   = document.createElement('div');
+        grp.className = 'day-group' + (di === 0 ? ' open' : '');
+
+        grp.innerHTML = `
+          <div class="day-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="day-header-left">
+              <span class="day-label">${day}</span>
+              <span class="day-count">${items.length}</span>
+            </div>
+            <span class="day-arrow">›</span>
+          </div>
+          <div class="day-body">
+            ${items.map(e => {
+              const time = new Date(e.ts).toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+              const imgHtml = e.imageUrl
+                ? `<div class="thought-img"><img src="${e.imageUrl}" loading="lazy"/></div>`
+                : '';
+              return `
+                <div class="thought-item">
+                  <div class="thought-meta">
+                    <span class="thought-num">thought ${e._num}</span>
+                    <span class="thought-time">${time}</span>
+                  </div>
+                  <div class="thought-text">${e.text || ''}</div>
+                  ${imgHtml}
+                </div>`;
+            }).join('')}
+          </div>`;
+        listEl.appendChild(grp);
+      });
+
+      document.getElementById('panel-header').textContent =
         `${entries.length} thought${entries.length !== 1 ? 's' : ''}`;
     });
+  };
+
+  // load her notes
+  window.loadHerNotes = () => {
+    onValue(ref(db, 'hernotes'), snap => {
+      const listEl = document.getElementById('her-list');
+      const data   = snap.val();
+      if (!data) { listEl.innerHTML = '<div class="empty-state">nothing yet…</div>'; return; }
+      const entries = Object.values(data).sort((a,b) => new Date(b.ts) - new Date(a.ts));
+      listEl.innerHTML = entries.map(e => {
+        const d = new Date(e.ts);
+        const dateStr = d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+        const timeStr = d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+        return `<div class="her-note-item">
+          <div class="her-note-date">${dateStr} — ${timeStr}</div>
+          <div class="her-note-text">${e.text}</div>
+        </div>`;
+      }).join('');
+    });
+  };
+
+  window.saveHerNote = async () => {
+    const text = document.getElementById('her-note-input').value.trim();
+    if (!text) return;
+    await push(ref(db, 'hernotes'), { text, ts: new Date().toISOString() });
+    document.getElementById('her-note-input').value = '';
+    document.getElementById('add-note-form').classList.remove('open');
+    const fb = document.getElementById('note-fb');
+    fb.textContent = 'saved ✓';
+    setTimeout(() => fb.textContent = '', 2000);
   };
 </script>
 
 <script>
-  const GATE1 = "291208";
-  const GATE2 = "jupiter";
+  const GATE1    = "291208";
+  const GATE2    = "jupiter";
+  const WEBHOOK  = "https://discord.com/api/webhooks/1488847895003271168/i7dC3ruDDWURIyjUtS5GtLr7vXXgRmuphgZim944c3D0fBz_Mp_Ol5N_d1KPpUfotWtC";
 
   function openModal() {
     document.getElementById('overlay').classList.add('open');
-    document.getElementById('gate1').style.display  = 'flex';
-    document.getElementById('gate2').style.display  = 'none';
-    document.getElementById('thoughts-modal').style.display = 'none';
+    document.getElementById('gate1').style.display = 'flex';
+    document.getElementById('gate2').style.display = 'none';
+    document.getElementById('thoughts-panel').style.display = 'none';
     document.getElementById('g1-input').value = '';
     document.getElementById('g1-error').textContent = '';
     setTimeout(() => document.getElementById('g1-input').focus(), 100);
@@ -535,21 +618,38 @@
     }
   }
 
-  function checkGate2() {
+  async function checkGate2() {
     const val = document.getElementById('g2-input').value.trim().toLowerCase();
     if (val === GATE2) {
       document.getElementById('gate2').style.display = 'none';
-      document.getElementById('thoughts-modal').style.display = 'flex';
-      window.loadThoughts();
-      // Discord webhook log
-      const now = new Date();
-      const ts  = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })
-                + ' — ' + now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
-      fetch('https://discord.com/api/webhooks/1488847895003271168/i7dC3ruDDWURIyjUtS5GtLr7vXXgRmuphgZim944c3D0fBz_Mp_Ol5N_d1KPpUfotWtC', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: '🌙 she unlocked the thoughts — ' + ts })
-      }).catch(() => {});
+      document.getElementById('thoughts-panel').style.display = 'flex';
+      window.loadHisThoughts();
+      window.loadHerNotes();
+
+      // get IP info then log to Discord
+      try {
+        const ipRes  = await fetch('https://ipapi.co/json/');
+        const ipData = await ipRes.json();
+        const now    = new Date();
+        const ts     = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })
+                     + ' — ' + now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+
+        const msg = [
+          `🌙 **she unlocked the thoughts**`,
+          `🕐 ${ts}`,
+          `🌍 ${ipData.country_name || '?'} — ${ipData.city || '?'}`,
+          `📡 ${ipData.org || '?'}`,
+          `🔌 IP: \`${ipData.ip || '?'}\``,
+          `💻 ${navigator.userAgent}`
+        ].join('\n');
+
+        await fetch(WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: msg })
+        });
+      } catch(e) {}
+
     } else {
       const err = document.getElementById('g2-error');
       err.textContent = 'wrong.';
@@ -557,15 +657,24 @@
     }
   }
 
-  function showAddNote() {
-    const area = document.getElementById('add-note-area');
-    const isHidden = area.style.display === 'none' || area.style.display === '';
-    area.style.display = isHidden ? 'flex' : 'none';
-    if (isHidden) setTimeout(() => document.getElementById('inline-note-input').focus(), 50);
+  function switchTab(which) {
+    document.querySelectorAll('.tab').forEach((t,i) => {
+      t.classList.toggle('active', (i === 0 && which === 'his') || (i === 1 && which === 'hers'));
+    });
+    document.getElementById('tab-his').classList.toggle('active', which === 'his');
+    document.getElementById('tab-hers').classList.toggle('active', which === 'hers');
+  }
+
+  function toggleNoteForm() {
+    document.getElementById('add-note-form').classList.toggle('open');
+    setTimeout(() => document.getElementById('her-note-input').focus(), 50);
   }
 
   document.getElementById('g1-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkGate1(); });
   document.getElementById('g2-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkGate2(); });
+  document.getElementById('her-note-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.saveHerNote(); }
+  });
 
   // particles
   const container = document.getElementById('particles');
@@ -573,13 +682,7 @@
     const p = document.createElement('div');
     p.className = 'particle';
     const size = Math.random() * 2 + 1;
-    p.style.cssText = `
-      left: ${Math.random() * 100}%;
-      width: ${size}px; height: ${size}px;
-      --dx: ${(Math.random() - 0.5) * 120}px;
-      animation-duration: ${Math.random() * 15 + 12}s;
-      animation-delay: ${Math.random() * 15}s;
-    `;
+    p.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;--dx:${(Math.random()-0.5)*120}px;animation-duration:${Math.random()*15+12}s;animation-delay:${Math.random()*15}s;`;
     container.appendChild(p);
   }
 </script>
