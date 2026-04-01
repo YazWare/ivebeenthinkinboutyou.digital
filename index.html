@@ -27,7 +27,6 @@
       overflow: hidden;
     }
 
-    /* grain overlay */
     body::before {
       content: '';
       position: fixed;
@@ -38,7 +37,6 @@
       opacity: 0.6;
     }
 
-    /* vignette */
     body::after {
       content: '';
       position: fixed;
@@ -58,39 +56,20 @@
       gap: 0;
     }
 
-    /* floating particles */
-    .particles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
+    .particles { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
     .particle {
       position: absolute;
-      width: 1px;
-      height: 1px;
+      width: 1px; height: 1px;
       background: var(--accent);
       border-radius: 50%;
       animation: drift linear infinite;
       opacity: 0;
     }
-
     @keyframes drift {
       0%   { transform: translateY(110vh) translateX(0); opacity: 0; }
       10%  { opacity: 0.4; }
       90%  { opacity: 0.2; }
       100% { transform: translateY(-10vh) translateX(var(--dx)); opacity: 0; }
-    }
-
-    .label-top {
-      font-size: clamp(0.75rem, 2vw, 0.9rem);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-family: 'Courier Prime', monospace;
-      opacity: 0;
-      animation: fadeUp 1.2s ease forwards 0.3s;
-      margin-bottom: 2rem;
     }
 
     .count-wrap {
@@ -108,8 +87,6 @@
       font-style: italic;
       position: relative;
     }
-
-    /* soft glow behind number */
     .count::before {
       content: attr(data-n);
       position: absolute;
@@ -139,17 +116,55 @@
       opacity: 0;
       animation: fadeUp 1.4s ease forwards 1.1s;
     }
+    .label-bottom em { color: var(--accent); font-style: normal; }
 
-    .label-bottom em {
+    /* ── THOUGHTS BUTTON ── */
+    .thoughts-btn {
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: transparent;
+      border: 1px solid var(--accent);
       color: var(--accent);
-      font-style: normal;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      letter-spacing: 0.1em;
+      padding: 0.65rem 1.6rem;
+      cursor: pointer;
+      opacity: 0;
+      animation: fadeUp 1.4s ease forwards 1.4s;
+      transition: background 0.25s, box-shadow 0.25s;
+      position: relative;
+      z-index: 10;
+    }
+    .thoughts-btn::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border: 1px solid rgba(200,169,126,0.15);
+      pointer-events: none;
+    }
+    .thoughts-btn:hover {
+      background: rgba(200,169,126,0.08);
+      box-shadow: 0 0 28px rgba(200,169,126,0.18);
+    }
+    .thoughts-btn .btn-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease infinite;
+      flex-shrink: 0;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.3; transform: scale(0.5); }
     }
 
-    /* small date bottom-right */
     .last-updated {
       position: fixed;
-      bottom: 2rem;
-      right: 2.5rem;
+      bottom: 2rem; right: 2.5rem;
       font-family: 'Courier Prime', monospace;
       font-size: 0.65rem;
       color: var(--muted);
@@ -158,13 +173,10 @@
       animation: fadeUp 1.4s ease forwards 1.5s;
     }
 
-    /* tiny top-left dot just for aesthetics */
     .corner-mark {
       position: fixed;
-      top: 2rem;
-      left: 2.5rem;
-      width: 4px;
-      height: 4px;
+      top: 2rem; left: 2.5rem;
+      width: 4px; height: 4px;
       border-radius: 50%;
       background: var(--red);
       opacity: 0;
@@ -176,15 +188,159 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* number tick animation */
-    .count.tick {
-      animation: tick 0.3s ease;
-    }
+    .count.tick { animation: tick 0.3s ease; }
     @keyframes tick {
       0%   { transform: scale(1); }
       50%  { transform: scale(1.04); }
       100% { transform: scale(1); }
     }
+
+    /* ── MODAL OVERLAY ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 7, 5, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.4rem;
+      max-width: 340px;
+      width: 90%;
+    }
+
+    .modal-title {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-align: center;
+    }
+    .modal-title em { color: var(--accent); font-style: normal; }
+
+    .modal-hint {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .modal input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--muted);
+      color: var(--text);
+      font-family: 'Courier Prime', monospace;
+      font-size: 1rem;
+      padding: 0.5rem 0;
+      text-align: center;
+      letter-spacing: 0.3em;
+      outline: none;
+      width: 16ch;
+      transition: border-color 0.3s;
+    }
+    .modal input:focus { border-color: var(--accent); }
+
+    .modal-error {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.7rem;
+      color: var(--red);
+      letter-spacing: 0.1em;
+      min-height: 1em;
+    }
+
+    .modal-btn {
+      background: transparent;
+      border: 1px solid var(--muted);
+      color: var(--muted);
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      padding: 0.5rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .modal-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .modal-close {
+      position: fixed;
+      top: 1.5rem; right: 2rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: 'Courier Prime', monospace;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: color 0.2s;
+      z-index: 201;
+    }
+    .modal-close:hover { color: var(--text); }
+
+    /* ── THOUGHTS LIST ── */
+    .thoughts-list {
+      width: 100%;
+      max-height: 60vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+      padding-right: 0.5rem;
+    }
+    .thoughts-list::-webkit-scrollbar { width: 2px; }
+    .thoughts-list::-webkit-scrollbar-thumb { background: var(--muted); }
+
+    .thought-entry {
+      border-left: 1px solid rgba(107,95,85,0.4);
+      padding-left: 1rem;
+    }
+
+    .thought-date {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      margin-bottom: 0.35rem;
+    }
+
+    .thought-text {
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .thoughts-empty {
+      font-style: italic;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .list-title {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    #thoughts-modal { max-width: 420px; }
   </style>
 </head>
 <body>
@@ -203,16 +359,51 @@
     times i thought of <em>you</em><br>
     since i made this <em>(april 1)</em>
   </div>
+
+  <button class="thoughts-btn" onclick="openModal()">
+    <span class="btn-dot"></span>
+    what was i thinking about ?
+  </button>
 </div>
 
 <div class="last-updated" id="last-updated"></div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+
+  <!-- gate 1: birthdate -->
+  <div class="modal" id="gate1">
+    <div class="modal-title">what's <em>my</em> birthdate ?</div>
+    <div class="modal-hint">dd mm yy</div>
+    <input type="password" id="g1-input" placeholder="· · · · · ·" autocomplete="off" inputmode="numeric"/>
+    <div class="modal-error" id="g1-error"></div>
+    <button class="modal-btn" onclick="checkGate1()">enter</button>
+  </div>
+
+  <!-- gate 2: planet -->
+  <div class="modal" id="gate2" style="display:none">
+    <div class="modal-title">our <em>planet</em></div>
+    <div class="modal-hint">hint — our planet</div>
+    <input type="text" id="g2-input" placeholder="· · · · · ·" autocomplete="off"/>
+    <div class="modal-error" id="g2-error"></div>
+    <button class="modal-btn" onclick="checkGate2()">enter</button>
+  </div>
+
+  <!-- thoughts list -->
+  <div class="modal" id="thoughts-modal" style="display:none">
+    <div class="list-title" id="thoughts-header">thoughts</div>
+    <div class="thoughts-list" id="thoughts-list">
+      <div class="thoughts-empty">nothing yet…</div>
+    </div>
+  </div>
+</div>
 
 <!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  // ── REPLACE WITH YOUR FIREBASE CONFIG ──
   const firebaseConfig = {
     apiKey: "AIzaSyA96e5SPjrjwQfM0wTYIWmN17fwmllQjsw",
     authDomain: "ivebeenthinkinboutyou.firebaseapp.com",
@@ -222,13 +413,12 @@
     messagingSenderId: "51379647443",
     appId: "1:51379647443:web:03205ec0ee3b75d1d87526"
   };
-  // ────────────────────────────────────────
 
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
 
-  const countEl   = document.getElementById('count');
-  const lastEl    = document.getElementById('last-updated');
+  const countEl = document.getElementById('count');
+  const lastEl  = document.getElementById('last-updated');
 
   onValue(ref(db, 'thoughts'), (snap) => {
     const data = snap.val() || {};
@@ -246,10 +436,93 @@
       lastEl.textContent = `last — ${d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })}`;
     }
   });
+
+  window.loadThoughts = () => {
+    onValue(ref(db, 'notes'), (snap) => {
+      const listEl = document.getElementById('thoughts-list');
+      const data   = snap.val();
+
+      if (!data) {
+        listEl.innerHTML = '<div class="thoughts-empty">nothing yet…</div>';
+        return;
+      }
+
+      const entries = Object.values(data).sort((a, b) => new Date(b.ts) - new Date(a.ts));
+      listEl.innerHTML = '';
+
+      entries.forEach(entry => {
+        const d       = new Date(entry.ts);
+        const dateStr = d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+        const timeStr = d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+
+        const el = document.createElement('div');
+        el.className = 'thought-entry';
+        el.innerHTML = `
+          <div class="thought-date">${dateStr} — ${timeStr}</div>
+          <div class="thought-text">${entry.text}</div>
+        `;
+        listEl.appendChild(el);
+      });
+
+      document.getElementById('thoughts-header').textContent =
+        `${entries.length} thought${entries.length !== 1 ? 's' : ''}`;
+    });
+  };
 </script>
 
 <script>
-  // generate floating particles
+  const GATE1 = "291208";
+  const GATE2 = "jupiter";
+
+  function openModal() {
+    document.getElementById('overlay').classList.add('open');
+    document.getElementById('gate1').style.display  = 'flex';
+    document.getElementById('gate2').style.display  = 'none';
+    document.getElementById('thoughts-modal').style.display = 'none';
+    document.getElementById('g1-input').value = '';
+    document.getElementById('g1-error').textContent = '';
+    setTimeout(() => document.getElementById('g1-input').focus(), 100);
+  }
+
+  function closeModal() {
+    document.getElementById('overlay').classList.remove('open');
+  }
+
+  document.getElementById('overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('overlay')) closeModal();
+  });
+
+  function checkGate1() {
+    const val = document.getElementById('g1-input').value.trim();
+    if (val === GATE1) {
+      document.getElementById('gate1').style.display = 'none';
+      document.getElementById('gate2').style.display = 'flex';
+      document.getElementById('g2-input').value = '';
+      setTimeout(() => document.getElementById('g2-input').focus(), 100);
+    } else {
+      const err = document.getElementById('g1-error');
+      err.textContent = 'wrong.';
+      setTimeout(() => err.textContent = '', 1500);
+    }
+  }
+
+  function checkGate2() {
+    const val = document.getElementById('g2-input').value.trim().toLowerCase();
+    if (val === GATE2) {
+      document.getElementById('gate2').style.display = 'none';
+      document.getElementById('thoughts-modal').style.display = 'flex';
+      window.loadThoughts();
+    } else {
+      const err = document.getElementById('g2-error');
+      err.textContent = 'wrong.';
+      setTimeout(() => err.textContent = '', 1500);
+    }
+  }
+
+  document.getElementById('g1-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkGate1(); });
+  document.getElementById('g2-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkGate2(); });
+
+  // particles
   const container = document.getElementById('particles');
   for (let i = 0; i < 30; i++) {
     const p = document.createElement('div');
@@ -257,8 +530,7 @@
     const size = Math.random() * 2 + 1;
     p.style.cssText = `
       left: ${Math.random() * 100}%;
-      width: ${size}px;
-      height: ${size}px;
+      width: ${size}px; height: ${size}px;
       --dx: ${(Math.random() - 0.5) * 120}px;
       animation-duration: ${Math.random() * 15 + 12}s;
       animation-delay: ${Math.random() * 15}s;
