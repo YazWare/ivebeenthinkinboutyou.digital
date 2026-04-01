@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>—</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital@0;1&family=Cormorant+Garamond:ital,wght@1,300&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0705;
+      --text: #e8ddd0;
+      --muted: #4a3f37;
+      --accent: #c8a97e;
+      --red: #8b3a3a;
+      --green: #4a7a5a;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Courier Prime', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* ── AUTH SCREEN ── */
+    #auth-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      animation: fadeIn 0.8s ease;
+    }
+
+    #auth-screen .title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    #auth-screen input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--muted);
+      color: var(--text);
+      font-family: 'Courier Prime', monospace;
+      font-size: 1rem;
+      padding: 0.5rem 0;
+      text-align: center;
+      letter-spacing: 0.3em;
+      outline: none;
+      width: 16ch;
+      transition: border-color 0.3s;
+    }
+
+    #auth-screen input:focus { border-color: var(--accent); }
+
+    #auth-screen .error {
+      font-size: 0.7rem;
+      color: var(--red);
+      letter-spacing: 0.1em;
+      min-height: 1em;
+    }
+
+    #auth-screen button {
+      background: transparent;
+      border: 1px solid var(--muted);
+      color: var(--muted);
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      padding: 0.5rem 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    #auth-screen button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ── ADMIN PANEL ── */
+    #admin-panel {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .panel-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+    }
+
+    .current-count {
+      font-size: 4.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1;
+      text-align: center;
+    }
+
+    .current-count span {
+      display: block;
+      font-family: 'Courier Prime', monospace;
+      font-style: normal;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .controls input[type="number"] {
+      background: transparent;
+      border: 1px solid var(--muted);
+      color: var(--text);
+      font-family: 'Courier Prime', monospace;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      text-align: center;
+      outline: none;
+      width: 10ch;
+      -moz-appearance: textfield;
+      transition: border-color 0.3s;
+    }
+
+    .controls input::-webkit-outer-spin-button,
+    .controls input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+    .controls input:focus { border-color: var(--accent); }
+
+    .btn {
+      background: transparent;
+      border: 1px solid var(--muted);
+      color: var(--muted);
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .btn.danger:hover { border-color: var(--red); color: var(--red); }
+
+    .btn.set-btn {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .btn.set-btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .feedback {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      min-height: 1em;
+      color: var(--green);
+      text-align: center;
+    }
+
+    .divider {
+      width: 4rem;
+      height: 1px;
+      background: var(--muted);
+      opacity: 0.3;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="title">enter password</div>
+  <input type="password" id="pw-input" placeholder="· · · · · ·" autocomplete="off"/>
+  <div class="error" id="auth-error"></div>
+  <button onclick="checkPassword()">enter</button>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-panel">
+  <div class="panel-title">admin</div>
+
+  <div class="current-count" id="display-count">
+    …
+    <span>current count</span>
+  </div>
+
+  <div class="controls">
+    <div class="row">
+      <button class="btn" onclick="adjustCount(-1)">− 1</button>
+      <button class="btn" onclick="adjustCount(1)">+ 1</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <input type="number" id="set-value" placeholder="—" min="0"/>
+      <button class="btn set-btn" onclick="setCount()">set</button>
+    </div>
+
+    <div class="row">
+      <button class="btn danger" onclick="resetCount()">reset to 0</button>
+    </div>
+  </div>
+
+  <div class="feedback" id="feedback"></div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  // ── SAME FIREBASE CONFIG AS index.html ──
+  const firebaseConfig = {
+    apiKey: "AIzaSyA96e5SPjrjwQfM0wTYIWmN17fwmllQjsw",
+    authDomain: "ivebeenthinkinboutyou.firebaseapp.com",
+    databaseURL: "https://ivebeenthinkinboutyou-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "ivebeenthinkinboutyou",
+    storageBucket: "ivebeenthinkinboutyou.firebasestorage.app",
+    messagingSenderId: "51379647443",
+    appId: "1:51379647443:web:03205ec0ee3b75d1d87526"
+  };
+  // ────────────────────────────────────────
+
+  // ── CHANGE THESE ──
+  const ADMIN_PASSWORD  = "291208";   // password for the form
+  // ──────────────────
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+  const thoughtsRef = ref(db, 'thoughts');
+
+  let currentCount = 0;
+
+  // listen
+  onValue(thoughtsRef, (snap) => {
+    const data = snap.val() || {};
+    currentCount = data.count ?? 0;
+    document.getElementById('display-count').childNodes[0].textContent = currentCount.toLocaleString();
+  });
+
+  function write(n) {
+    return set(thoughtsRef, { count: n, lastUpdated: new Date().toISOString() });
+  }
+
+  function showFeedback(msg, color = 'var(--green)') {
+    const el = document.getElementById('feedback');
+    el.style.color = color;
+    el.textContent = msg;
+    setTimeout(() => el.textContent = '', 2000);
+  }
+
+  // expose to window
+  window.checkPassword = () => {
+    const val = document.getElementById('pw-input').value;
+    if (val === ADMIN_PASSWORD) {
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'flex';
+    } else {
+      document.getElementById('auth-error').textContent = 'wrong.';
+      setTimeout(() => document.getElementById('auth-error').textContent = '', 1500);
+    }
+  };
+
+  window.adjustCount = async (delta) => {
+    const n = Math.max(0, currentCount + delta);
+    await write(n);
+    showFeedback(`saved — ${n}`);
+  };
+
+  window.setCount = async () => {
+    const v = parseInt(document.getElementById('set-value').value);
+    if (isNaN(v) || v < 0) return;
+    await write(v);
+    document.getElementById('set-value').value = '';
+    showFeedback(`set to ${v}`);
+  };
+
+  window.resetCount = async () => {
+    if (!confirm('reset to 0?')) return;
+    await write(0);
+    showFeedback('reset.', 'var(--red)');
+  };
+</script>
+
+<script>
+  // allow enter key on password
+  document.getElementById('pw-input')
+    .addEventListener('keydown', e => { if (e.key === 'Enter') window.checkPassword(); });
+</script>
+
+</body>
+</html>
