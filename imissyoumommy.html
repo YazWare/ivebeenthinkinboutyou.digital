@@ -24,133 +24,76 @@
       background: var(--bg);
       color: var(--text);
       font-family: 'Courier Prime', monospace;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
+      display: flex; align-items: center; justify-content: center;
+      padding: 2.5rem 1rem;
     }
 
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
+      content: ''; position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      opacity: 0.5;
+      pointer-events: none; opacity: 0.5;
     }
 
-    /* AUTH */
     #auth-screen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 1.5rem;
       animation: fadeIn 0.8s ease;
     }
-
     #auth-screen .title {
       font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 1.1rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
+      font-style: italic; font-size: 1.1rem;
+      color: var(--muted); letter-spacing: 0.1em;
     }
-
     #auth-screen input {
-      background: transparent;
-      border: none;
+      background: transparent; border: none;
       border-bottom: 1px solid var(--muted);
-      color: var(--text);
-      font-family: 'Courier Prime', monospace;
-      font-size: 1rem;
-      padding: 0.5rem 0;
-      text-align: center;
-      letter-spacing: 0.3em;
-      outline: none;
-      width: 16ch;
+      color: var(--text); font-family: 'Courier Prime', monospace;
+      font-size: 1rem; padding: 0.5rem 0; text-align: center;
+      letter-spacing: 0.3em; outline: none; width: 16ch;
       transition: border-color 0.3s;
     }
     #auth-screen input:focus { border-color: var(--accent); }
-
-    #auth-screen .error {
-      font-size: 0.7rem;
-      color: var(--red);
-      letter-spacing: 0.1em;
-      min-height: 1em;
-    }
-
+    #auth-screen .error { font-size: 0.7rem; color: var(--red); letter-spacing: 0.1em; min-height: 1em; }
     #auth-screen button {
-      background: transparent;
-      border: 1px solid var(--muted);
-      color: var(--muted);
-      font-family: 'Courier Prime', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      padding: 0.5rem 1.5rem;
-      cursor: pointer;
-      transition: all 0.2s;
+      background: transparent; border: 1px solid var(--muted);
+      color: var(--muted); font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem; letter-spacing: 0.2em;
+      padding: 0.5rem 1.5rem; cursor: pointer; transition: all 0.2s;
     }
     #auth-screen button:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* ADMIN PANEL */
     #admin-panel {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 2.5rem;
-      width: 100%;
-      max-width: 360px;
+      display: none; flex-direction: column;
+      align-items: center; gap: 2.5rem;
+      width: 100%; max-width: 380px;
       animation: fadeIn 0.8s ease;
     }
 
     .panel-title {
       font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 0.9rem;
-      color: var(--muted);
-      letter-spacing: 0.2em;
+      font-style: italic; font-size: 0.9rem;
+      color: var(--muted); letter-spacing: 0.2em;
     }
 
     .current-count {
-      font-size: 4.5rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 300;
-      color: var(--text);
-      line-height: 1;
-      text-align: center;
+      font-size: 4.5rem; font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 300;
+      color: var(--text); line-height: 1; text-align: center;
     }
     .current-count span {
-      display: block;
-      font-family: 'Courier Prime', monospace;
-      font-style: normal;
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      color: var(--muted);
-      margin-top: 0.5rem;
+      display: block; font-family: 'Courier Prime', monospace;
+      font-style: normal; font-size: 0.6rem;
+      letter-spacing: 0.3em; color: var(--muted); margin-top: 0.5rem;
     }
 
-    .controls {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      align-items: center;
-      width: 100%;
-    }
-
+    .controls { display: flex; flex-direction: column; gap: 1rem; align-items: center; width: 100%; }
     .row { display: flex; gap: 0.75rem; align-items: center; }
 
     .controls input[type="number"] {
-      background: transparent;
-      border: 1px solid var(--muted);
-      color: var(--text);
-      font-family: 'Courier Prime', monospace;
-      font-size: 1rem;
-      padding: 0.5rem 1rem;
-      text-align: center;
-      outline: none;
-      width: 10ch;
-      -moz-appearance: textfield;
+      background: transparent; border: 1px solid var(--muted);
+      color: var(--text); font-family: 'Courier Prime', monospace;
+      font-size: 1rem; padding: 0.5rem 1rem; text-align: center;
+      outline: none; width: 10ch; -moz-appearance: textfield;
       transition: border-color 0.3s;
     }
     .controls input::-webkit-outer-spin-button,
@@ -158,84 +101,73 @@
     .controls input:focus { border-color: var(--accent); }
 
     .btn {
-      background: transparent;
-      border: 1px solid var(--muted);
-      color: var(--muted);
-      font-family: 'Courier Prime', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      padding: 0.5rem 1.2rem;
-      cursor: pointer;
-      transition: all 0.2s;
+      background: transparent; border: 1px solid var(--muted);
+      color: var(--muted); font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem; letter-spacing: 0.15em;
+      padding: 0.5rem 1.2rem; cursor: pointer; transition: all 0.2s;
     }
     .btn:hover { border-color: var(--accent); color: var(--accent); }
     .btn.danger:hover { border-color: var(--red); color: var(--red); }
-    .btn.set-btn { border-color: var(--accent); color: var(--accent); }
-    .btn.set-btn:hover { background: var(--accent); color: var(--bg); }
+    .btn.accent { border-color: var(--accent); color: var(--accent); }
+    .btn.accent:hover { background: var(--accent); color: var(--bg); }
 
     .feedback {
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      min-height: 1em;
-      color: var(--green);
-      text-align: center;
+      font-size: 0.7rem; letter-spacing: 0.15em;
+      min-height: 1em; color: var(--green); text-align: center;
     }
 
-    .divider {
-      width: 4rem;
-      height: 1px;
-      background: var(--muted);
-      opacity: 0.3;
-    }
+    .divider { width: 4rem; height: 1px; background: var(--muted); opacity: 0.3; }
 
-    /* NOTES SECTION */
     .section-sep {
-      width: 100%;
-      height: 1px;
+      width: 100%; height: 1px;
       background: linear-gradient(to right, transparent, var(--muted), transparent);
       opacity: 0.3;
     }
-
     .section-label {
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-align: center;
+      font-size: 0.6rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--muted); text-align: center;
     }
 
-    .notes-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      width: 100%;
+    /* thought writer */
+    .thought-writer { display: flex; flex-direction: column; gap: 1rem; width: 100%; }
+
+    .thought-writer textarea {
+      width: 100%; background: transparent;
+      border: 1px solid var(--muted); color: var(--text);
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 0.95rem; line-height: 1.7;
+      padding: 0.75rem 1rem; outline: none; resize: none;
+      transition: border-color 0.3s; min-height: 90px;
+    }
+    .thought-writer textarea:focus { border-color: var(--accent); }
+    .thought-writer textarea::placeholder { color: var(--muted); opacity: 0.6; }
+
+    /* image upload */
+    .img-upload-area {
+      border: 1px dashed var(--muted); padding: 0.8rem 1rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      align-items: center; cursor: pointer; transition: border-color 0.2s;
+    }
+    .img-upload-area:hover { border-color: var(--accent); }
+    .img-upload-label {
+      font-size: 0.65rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted);
+      cursor: pointer;
+    }
+    .img-upload-area input[type="file"] { display: none; }
+    #img-preview {
+      max-width: 100%; max-height: 140px; object-fit: cover;
+      display: none; border: 1px solid rgba(107,95,85,0.3); opacity: 0.8;
+    }
+    .img-clear {
+      font-size: 0.6rem; letter-spacing: 0.1em;
+      color: var(--red); cursor: pointer; display: none;
     }
 
-    .notes-section textarea {
-      width: 100%;
-      background: transparent;
-      border: 1px solid var(--muted);
-      color: var(--text);
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-size: 0.95rem;
-      line-height: 1.7;
-      padding: 0.75rem 1rem;
-      outline: none;
-      resize: none;
-      transition: border-color 0.3s;
-      min-height: 90px;
-    }
-    .notes-section textarea:focus { border-color: var(--accent); }
-    .notes-section textarea::placeholder { color: var(--muted); opacity: 0.6; }
-
-    .note-feedback {
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
-      min-height: 1em;
-      color: var(--green);
-      text-align: center;
+    .thought-actions { display: flex; gap: 0.75rem; justify-content: flex-end; }
+    .note-fb {
+      font-size: 0.7rem; letter-spacing: 0.15em;
+      min-height: 1em; color: var(--green); text-align: right;
     }
 
     @keyframes fadeIn {
@@ -259,8 +191,7 @@
   <div class="panel-title">admin</div>
 
   <div class="current-count" id="display-count">
-    …
-    <span>current count</span>
+    …<span>current count</span>
   </div>
 
   <div class="controls">
@@ -268,14 +199,11 @@
       <button class="btn" onclick="adjustCount(-1)">− 1</button>
       <button class="btn" onclick="adjustCount(1)">+ 1</button>
     </div>
-
     <div class="divider"></div>
-
     <div class="row">
       <input type="number" id="set-value" placeholder="—" min="0"/>
-      <button class="btn set-btn" onclick="setCount()">set</button>
+      <button class="btn accent" onclick="setCount()">set</button>
     </div>
-
     <div class="row">
       <button class="btn danger" onclick="resetCount()">reset to 0</button>
     </div>
@@ -283,14 +211,24 @@
 
   <div class="feedback" id="feedback"></div>
 
-  <!-- THOUGHTS -->
+  <!-- thought writer -->
   <div class="section-sep"></div>
-  <div class="section-label">what were you thinking about</div>
+  <div class="section-label">new thought</div>
 
-  <div class="notes-section">
-    <textarea id="note-input" placeholder="i was thinking about…" rows="3"></textarea>
-    <button class="btn set-btn" onclick="saveNote()">save thought</button>
-    <div class="note-feedback" id="note-feedback"></div>
+  <div class="thought-writer">
+    <textarea id="thought-input" placeholder="i was thinking about…" rows="3"></textarea>
+
+    <div class="img-upload-area" onclick="document.getElementById('img-file').click()">
+      <label class="img-upload-label">+ attach an image (optional)</label>
+      <input type="file" id="img-file" accept="image/*" onchange="previewImg(event)"/>
+      <img id="img-preview"/>
+      <span class="img-clear" id="img-clear" onclick="clearImg(event)">✕ remove</span>
+    </div>
+
+    <div class="thought-actions">
+      <button class="btn accent" onclick="saveThought()">save thought</button>
+    </div>
+    <div class="note-fb" id="thought-fb"></div>
   </div>
 </div>
 
@@ -314,37 +252,28 @@
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
   const thoughtsRef = ref(db, 'thoughts');
-  const notesRef    = ref(db, 'notes');
 
   let currentCount = 0;
 
-  onValue(thoughtsRef, (snap) => {
+  onValue(thoughtsRef, snap => {
     const data = snap.val() || {};
     currentCount = data.count ?? 0;
     document.getElementById('display-count').childNodes[0].textContent = currentCount.toLocaleString();
   });
 
-  function write(n) {
+  function writeCount(n) {
     return set(thoughtsRef, { count: n, lastUpdated: new Date().toISOString() });
   }
 
-  function showFeedback(msg, color = 'var(--green)') {
-    const el = document.getElementById('feedback');
+  function showFb(id, msg, color = 'var(--green)') {
+    const el = document.getElementById(id);
     el.style.color = color;
     el.textContent = msg;
-    setTimeout(() => el.textContent = '', 2000);
-  }
-
-  function showNoteFeedback(msg, color = 'var(--green)') {
-    const el = document.getElementById('note-feedback');
-    el.style.color = color;
-    el.textContent = msg;
-    setTimeout(() => el.textContent = '', 2000);
+    setTimeout(() => el.textContent = '', 2500);
   }
 
   window.checkPassword = () => {
-    const val = document.getElementById('pw-input').value;
-    if (val === ADMIN_PASSWORD) {
+    if (document.getElementById('pw-input').value === ADMIN_PASSWORD) {
       document.getElementById('auth-screen').style.display = 'none';
       document.getElementById('admin-panel').style.display = 'flex';
     } else {
@@ -353,40 +282,72 @@
     }
   };
 
-  window.adjustCount = async (delta) => {
+  window.adjustCount = async delta => {
     const n = Math.max(0, currentCount + delta);
-    await write(n);
-    showFeedback(`saved — ${n}`);
+    await writeCount(n);
+    showFb('feedback', `saved — ${n}`);
   };
 
   window.setCount = async () => {
     const v = parseInt(document.getElementById('set-value').value);
     if (isNaN(v) || v < 0) return;
-    await write(v);
+    await writeCount(v);
     document.getElementById('set-value').value = '';
-    showFeedback(`set to ${v}`);
+    showFb('feedback', `set to ${v}`);
   };
 
   window.resetCount = async () => {
     if (!confirm('reset to 0?')) return;
-    await write(0);
-    showFeedback('reset.', 'var(--red)');
+    await writeCount(0);
+    showFb('feedback', 'reset.', 'var(--red)');
   };
 
-  window.saveNote = async () => {
-    const text = document.getElementById('note-input').value.trim();
-    if (!text) return;
-    await push(notesRef, { text, ts: new Date().toISOString() });
-    document.getElementById('note-input').value = '';
-    showNoteFeedback('saved ✓');
+  window.saveThought = async () => {
+    const text = document.getElementById('thought-input').value.trim();
+    const imgPreview = document.getElementById('img-preview');
+    const imageUrl = (imgPreview.style.display !== 'none' && imgPreview.src) ? imgPreview.src : null;
+    if (!text && !imageUrl) return;
+
+    const entry = { ts: new Date().toISOString() };
+    if (text) entry.text = text;
+    if (imageUrl) entry.imageUrl = imageUrl;
+
+    await push(ref(db, 'notes'), entry);
+    document.getElementById('thought-input').value = '';
+    clearImg();
+    showFb('thought-fb', 'saved ✓');
   };
 </script>
 
 <script>
   document.getElementById('pw-input')
     .addEventListener('keydown', e => { if (e.key === 'Enter') window.checkPassword(); });
-  document.getElementById('note-input')
-    .addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.saveNote(); } });
+
+  document.getElementById('thought-input')
+    .addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.saveThought(); }
+    });
+
+  function previewImg(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const prev = document.getElementById('img-preview');
+      prev.src = ev.target.result;
+      prev.style.display = 'block';
+      document.getElementById('img-clear').style.display = 'inline';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearImg(e) {
+    if (e) e.stopPropagation();
+    document.getElementById('img-file').value = '';
+    const prev = document.getElementById('img-preview');
+    prev.src = ''; prev.style.display = 'none';
+    document.getElementById('img-clear').style.display = 'none';
+  }
 </script>
 
 </body>
