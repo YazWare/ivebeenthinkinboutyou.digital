@@ -176,25 +176,36 @@
       color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase;
     }
     .gate input {
-      background: transparent; border: none;
-      border-bottom: 1px solid var(--muted);
+      background: rgba(212,184,150,0.04);
+      border: 1px solid rgba(212,184,150,0.2);
+      border-radius: 2px;
       color: var(--text); font-family: 'Courier Prime', monospace;
-      font-size: 1rem; padding: 0.5rem 0; text-align: center;
-      letter-spacing: 0.3em; outline: none; width: 16ch;
-      transition: border-color 0.3s;
+      font-size: 1.05rem; padding: 0.65rem 1.2rem; text-align: center;
+      letter-spacing: 0.35em; outline: none; width: 18ch;
+      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
     }
-    .gate input:focus { border-color: var(--accent); }
+    .gate input:focus {
+      border-color: rgba(212,184,150,0.55);
+      background: rgba(212,184,150,0.07);
+      box-shadow: 0 0 20px rgba(212,184,150,0.1);
+    }
     .gate-error {
       font-family: 'Courier Prime', monospace; font-size: 0.7rem;
       color: var(--red); letter-spacing: 0.1em; min-height: 1em;
     }
     .gate-btn {
-      background: transparent; border: 1px solid var(--muted);
-      color: var(--muted); font-family: 'Courier Prime', monospace;
-      font-size: 0.75rem; letter-spacing: 0.2em;
-      padding: 0.5rem 1.5rem; cursor: pointer; transition: all 0.2s;
+      background: rgba(212,184,150,0.06);
+      border: 1px solid rgba(212,184,150,0.3);
+      color: var(--accent); font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem; letter-spacing: 0.25em;
+      padding: 0.6rem 2rem; cursor: pointer; transition: all 0.25s;
+      border-radius: 2px;
     }
-    .gate-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .gate-btn:hover {
+      background: rgba(212,184,150,0.14);
+      border-color: var(--accent);
+      box-shadow: 0 0 18px rgba(212,184,150,0.15);
+    }
 
     /* gate transitions */
     .gate {
@@ -213,9 +224,11 @@
     /* success glow on input */
     .gate input.success {
       border-color: var(--accent) !important;
-      box-shadow: 0 0 18px rgba(212,184,150,0.35), 0 0 40px rgba(212,184,150,0.12);
-      color: var(--accent);
-      transition: box-shadow 0.4s ease, border-color 0.3s ease;
+      background: rgba(212,184,150,0.1) !important;
+      box-shadow: 0 0 28px rgba(212,184,150,0.5), 0 0 60px rgba(212,184,150,0.18) !important;
+      color: var(--accent) !important;
+      letter-spacing: 0.5em;
+      transition: all 0.35s ease;
     }
 
     /* ── THOUGHTS PANEL ── */
@@ -264,34 +277,56 @@
     .thoughts-scroll::-webkit-scrollbar-thumb { background: var(--muted); }
 
     /* accordion day group */
-    .day-group { border: 1px solid rgba(107,95,85,0.2); }
+    .day-group {
+      border: 1px solid rgba(212,184,150,0.18);
+      border-radius: 2px;
+      background: rgba(212,184,150,0.03);
+      transition: border-color 0.25s, background 0.25s;
+      overflow: hidden;
+    }
+    .day-group.open {
+      border-color: rgba(212,184,150,0.38);
+      background: rgba(212,184,150,0.055);
+    }
     .day-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0.65rem 1rem; cursor: pointer;
+      padding: 0.8rem 1rem; cursor: pointer;
       transition: background 0.2s;
+      user-select: none;
     }
-    .day-header:hover { background: rgba(200,169,126,0.04); }
-    .day-header-left { display: flex; align-items: center; gap: 0.75rem; }
+    .day-header:hover { background: rgba(212,184,150,0.07); }
+    .day-header-left { display: flex; align-items: center; gap: 0.8rem; }
     .day-label {
-      font-family: 'Courier Prime', monospace;
-      font-size: 0.62rem; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--muted);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem; letter-spacing: 0.04em;
+      color: var(--text);
     }
     .day-count {
       font-family: 'Courier Prime', monospace;
-      font-size: 0.55rem; color: var(--muted);
-      background: rgba(107,95,85,0.2);
-      padding: 0.1rem 0.4rem; border-radius: 2px;
+      font-size: 0.58rem; color: var(--accent);
+      background: rgba(212,184,150,0.14);
+      border: 1px solid rgba(212,184,150,0.25);
+      padding: 0.1rem 0.5rem; border-radius: 20px;
+      letter-spacing: 0.1em;
     }
     .day-arrow {
-      font-size: 0.6rem; color: var(--muted);
-      transition: transform 0.25s; user-select: none;
+      width: 22px; height: 22px;
+      border: 1px solid rgba(212,184,150,0.35);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 0.75rem;
+      transition: transform 0.28s cubic-bezier(.4,0,.2,1), background 0.2s, border-color 0.2s;
+      flex-shrink: 0;
     }
-    .day-group.open .day-arrow { transform: rotate(90deg); }
-
+    .day-group.open .day-arrow {
+      transform: rotate(90deg);
+      background: rgba(212,184,150,0.12);
+      border-color: var(--accent);
+    }
     .day-body {
       display: none; flex-direction: column;
-      border-top: 1px solid rgba(107,95,85,0.15);
+      border-top: 1px solid rgba(212,184,150,0.12);
     }
     .day-group.open .day-body { display: flex; }
 
@@ -542,7 +577,7 @@
       days.forEach((day, di) => {
         const items = groups[day];
         const grp   = document.createElement('div');
-        grp.className = 'day-group' + (di === 0 ? ' open' : '');
+        grp.className = 'day-group';
 
         grp.innerHTML = `
           <div class="day-header" onclick="this.parentElement.classList.toggle('open')">
