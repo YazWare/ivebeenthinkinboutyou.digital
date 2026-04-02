@@ -196,6 +196,20 @@
     }
     .gate-btn:hover { border-color: var(--accent); color: var(--accent); }
 
+    /* gate transitions */
+    .gate {
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .gate.fade-out {
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+    }
+    .gate.fade-in-start {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
     /* ── THOUGHTS PANEL ── */
     #thoughts-panel {
       display: none;
@@ -307,7 +321,7 @@
       border: 1px solid rgba(107,95,85,0.3);
     }
 
-    /*  notes */
+    /* g */
     .her-note-item {
       padding: 0.9rem 1rem;
       border-bottom: 1px solid rgba(107,95,85,0.1);
@@ -427,23 +441,23 @@
 
     <div class="tabs">
       <div class="tab active" onclick="switchTab('his')">y</div>
-      <div class="tab" onclick="switchTab('hers')">g ADD NOTES</div>
+      <div class="tab" onclick="switchTab('hers')">g</div>
     </div>
 
-    <!-- his thoughts tab -->
+    <!-- y tab -->
     <div class="tab-content active" id="tab-his">
       <div class="thoughts-scroll" id="his-list">
         <div class="empty-state">nothing yet…</div>
       </div>
     </div>
 
-    <!-- her notes tab -->
+    <!-- g tab -->
     <div class="tab-content" id="tab-hers">
       <div class="thoughts-scroll" id="her-list">
         <div class="empty-state">nothing yet…</div>
       </div>
       <div class="add-note-bar">
-        <button class="add-note-toggle" onclick="toggleNoteForm()">+ leave a note</button>
+        <button class="add-note-toggle" onclick="toggleNoteForm()">ADD A NOTE</button>
       </div>
       <div class="add-note-form" id="add-note-form">
         <textarea id="her-note-input" placeholder="write something…" rows="3"></textarea>
@@ -492,7 +506,12 @@
     }
   });
 
-  // load his thoughts (notes) — grouped by day, numbered globally oldest→newest
+  // load y (notes) — grouped by day, numbered globally oldest→newest
+  function linkify(text) {
+    return text.replace(/(https?:\/\/[^\s<]+)/g,
+      '<a href="$1" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;text-underline-offset:3px;opacity:0.85;">$1</a>');
+  }
+
   window.loadHisThoughts = () => {
     onValue(ref(db, 'notes'), snap => {
       const listEl = document.getElementById('his-list');
@@ -531,14 +550,18 @@
               const imgHtml = e.imageUrl
                 ? `<div class="thought-img"><img src="${e.imageUrl}" loading="lazy"/></div>`
                 : '';
+              const vidHtml = e.videoUrl
+                ? `<div class="thought-img"><video src="${e.videoUrl}" controls preload="metadata" style="max-width:100%;max-height:220px;opacity:0.85;border:1px solid rgba(107,95,85,0.3);"></video></div>`
+                : '';
               return `
                 <div class="thought-item">
                   <div class="thought-meta">
                     <span class="thought-num">thought ${e._num}</span>
                     <span class="thought-time">${time}</span>
                   </div>
-                  <div class="thought-text">${e.text || ''}</div>
+                  <div class="thought-text">${linkify(e.text || '')}</div>
                   ${imgHtml}
+                  ${vidHtml}
                 </div>`;
             }).join('')}
           </div>`;
@@ -550,7 +573,7 @@
     });
   };
 
-  // load her notes
+  // load g
   window.loadHerNotes = () => {
     onValue(ref(db, 'hernotes'), snap => {
       const listEl = document.getElementById('her-list');
@@ -607,10 +630,19 @@
   function checkGate1() {
     const val = document.getElementById('g1-input').value.trim();
     if (val === GATE1) {
-      document.getElementById('gate1').style.display = 'none';
-      document.getElementById('gate2').style.display = 'flex';
-      document.getElementById('g2-input').value = '';
-      setTimeout(() => document.getElementById('g2-input').focus(), 100);
+      const g1 = document.getElementById('gate1');
+      const g2 = document.getElementById('gate2');
+      g1.classList.add('fade-out');
+      setTimeout(() => {
+        g1.style.display = 'none';
+        g1.classList.remove('fade-out');
+        g2.style.display = 'flex';
+        g2.classList.add('fade-in-start');
+        void g2.offsetWidth;
+        g2.classList.remove('fade-in-start');
+        document.getElementById('g2-input').value = '';
+        setTimeout(() => document.getElementById('g2-input').focus(), 50);
+      }, 350);
     } else {
       const err = document.getElementById('g1-error');
       err.textContent = 'wrong.';
@@ -621,8 +653,20 @@
   async function checkGate2() {
     const val = document.getElementById('g2-input').value.trim().toLowerCase();
     if (val === GATE2) {
-      document.getElementById('gate2').style.display = 'none';
-      document.getElementById('thoughts-panel').style.display = 'flex';
+      const g2 = document.getElementById('gate2');
+      const panel = document.getElementById('thoughts-panel');
+      g2.classList.add('fade-out');
+      setTimeout(() => {
+        g2.style.display = 'none';
+        g2.classList.remove('fade-out');
+        panel.style.display = 'flex';
+        panel.style.opacity = '0';
+        panel.style.transform = 'translateY(14px)';
+        panel.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+        void panel.offsetWidth;
+        panel.style.opacity = '1';
+        panel.style.transform = 'translateY(0)';
+      }, 350);
       window.loadHisThoughts();
       window.loadHerNotes();
 
