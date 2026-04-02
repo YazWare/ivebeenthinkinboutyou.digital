@@ -147,8 +147,18 @@
       backdrop-filter: blur(10px);
       z-index: 200; display: flex;
       align-items: center; justify-content: center;
+      overflow-y: auto;
       opacity: 0; pointer-events: none;
       transition: opacity 0.4s ease;
+    }
+    .overlay::-webkit-scrollbar { width: 3px; }
+    .overlay::-webkit-scrollbar-track { background: transparent; }
+    .overlay::-webkit-scrollbar-thumb { background: rgba(212,184,150,0.25); border-radius: 2px; }
+    .overlay::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+    /* thoughts panel needs top-align when taller than viewport */
+    .overlay.panel-open {
+      align-items: flex-start;
+      padding: 5vh 0;
     }
     .overlay.open { opacity: 1; pointer-events: all; }
 
@@ -236,7 +246,7 @@
       display: none;
       flex-direction: column;
       width: min(520px, 92vw);
-      max-height: 82vh;
+      max-height: 88vh;
       gap: 0;
     }
 
@@ -265,16 +275,16 @@
     .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
     .tab:hover:not(.active) { color: var(--text); }
 
-    .tab-content { display: none; flex-direction: column; overflow: hidden; flex: 1; }
+    .tab-content { display: none; flex-direction: column; }
     .tab-content.active { display: flex; }
 
-    /* scrollable list */
+    /* main scroll — the whole panel scrolls as one */
     .thoughts-scroll {
-      overflow-y: auto; flex: 1; padding: 1rem 0;
-      display: flex; flex-direction: column; gap: 0.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 0.75rem 0.25rem;
     }
-    .thoughts-scroll::-webkit-scrollbar { width: 2px; }
-    .thoughts-scroll::-webkit-scrollbar-thumb { background: var(--muted); }
 
     /* accordion day group */
     .day-group {
@@ -282,7 +292,6 @@
       border-radius: 2px;
       background: rgba(212,184,150,0.03);
       transition: border-color 0.25s, background 0.25s;
-      overflow: hidden;
     }
     .day-group.open {
       border-color: rgba(212,184,150,0.38);
@@ -325,7 +334,8 @@
       border-color: var(--accent);
     }
     .day-body {
-      display: none; flex-direction: column;
+      display: none;
+      flex-direction: column;
       border-top: 1px solid rgba(212,184,150,0.12);
     }
     .day-group.open .day-body { display: flex; }
@@ -664,6 +674,7 @@
 
   function closeModal() {
     document.getElementById('overlay').classList.remove('open');
+    document.getElementById('overlay').classList.remove('panel-open');
   }
 
   document.getElementById('overlay').addEventListener('click', e => {
@@ -714,6 +725,7 @@
           g2.classList.remove('fade-out');
           inp2.classList.remove('success');
           panel.style.display = 'flex';
+          document.getElementById('overlay').classList.add('panel-open');
           panel.style.opacity = '0';
           panel.style.transform = 'translateY(14px)';
           panel.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
