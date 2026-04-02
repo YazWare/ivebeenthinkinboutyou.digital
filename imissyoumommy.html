@@ -218,11 +218,12 @@
   <div class="thought-writer">
     <textarea id="thought-input" placeholder="i was thinking about…" rows="3"></textarea>
 
-    <div class="img-upload-area" onclick="document.getElementById('img-file').click()">
-      <label class="img-upload-label">+ attach an image (optional)</label>
-      <input type="file" id="img-file" accept="image/*" onchange="previewImg(event)"/>
+    <div class="img-upload-area" onclick="document.getElementById('media-file').click()">
+      <label class="img-upload-label">+ attach image or video (optional)</label>
+      <input type="file" id="media-file" accept="image/*,video/*" onchange="previewMedia(event)"/>
       <img id="img-preview"/>
-      <span class="img-clear" id="img-clear" onclick="clearImg(event)">✕ remove</span>
+      <video id="vid-preview" controls style="display:none;max-width:100%;max-height:140px;opacity:0.8;"></video>
+      <span class="img-clear" id="img-clear" onclick="clearMedia(event)">✕ remove</span>
     </div>
 
     <div class="thought-actions">
@@ -305,16 +306,19 @@
   window.saveThought = async () => {
     const text = document.getElementById('thought-input').value.trim();
     const imgPreview = document.getElementById('img-preview');
+    const vidPreview = document.getElementById('vid-preview');
     const imageUrl = (imgPreview.style.display !== 'none' && imgPreview.src) ? imgPreview.src : null;
-    if (!text && !imageUrl) return;
+    const videoUrl = (vidPreview.style.display !== 'none' && vidPreview.src) ? vidPreview.src : null;
+    if (!text && !imageUrl && !videoUrl) return;
 
     const entry = { ts: new Date().toISOString() };
     if (text) entry.text = text;
     if (imageUrl) entry.imageUrl = imageUrl;
+    if (videoUrl) entry.videoUrl = videoUrl;
 
     await push(ref(db, 'notes'), entry);
     document.getElementById('thought-input').value = '';
-    clearImg();
+    clearMedia();
     showFb('thought-fb', 'saved ✓');
   };
 </script>
@@ -328,24 +332,35 @@
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.saveThought(); }
     });
 
-  function previewImg(e) {
+  function previewMedia(e) {
     const file = e.target.files[0];
     if (!file) return;
+    const isVideo = file.type.startsWith('video/');
     const reader = new FileReader();
     reader.onload = ev => {
-      const prev = document.getElementById('img-preview');
-      prev.src = ev.target.result;
-      prev.style.display = 'block';
+      const img = document.getElementById('img-preview');
+      const vid = document.getElementById('vid-preview');
+      if (isVideo) {
+        vid.src = ev.target.result;
+        vid.style.display = 'block';
+        img.style.display = 'none'; img.src = '';
+      } else {
+        img.src = ev.target.result;
+        img.style.display = 'block';
+        vid.style.display = 'none'; vid.src = '';
+      }
       document.getElementById('img-clear').style.display = 'inline';
     };
     reader.readAsDataURL(file);
   }
 
-  function clearImg(e) {
+  function clearMedia(e) {
     if (e) e.stopPropagation();
-    document.getElementById('img-file').value = '';
-    const prev = document.getElementById('img-preview');
-    prev.src = ''; prev.style.display = 'none';
+    document.getElementById('media-file').value = '';
+    const img = document.getElementById('img-preview');
+    const vid = document.getElementById('vid-preview');
+    img.src = ''; img.style.display = 'none';
+    vid.src = ''; vid.style.display = 'none';
     document.getElementById('img-clear').style.display = 'none';
   }
 </script>
