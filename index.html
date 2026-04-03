@@ -488,6 +488,15 @@
     <button class="gate-btn" onclick="checkGate2()">enter</button>
   </div>
 
+  <!-- gate 3 -->
+  <div class="gate" id="gate3" style="display:none">
+    <div class="gate-title">the food i <em>hate</em> the most</div>
+    <div class="gate-hint">hint — 6 letters, singular</div>
+    <input type="text" id="g3-input" placeholder="· · · · · ·" autocomplete="off"/>
+    <div class="gate-error" id="g3-error"></div>
+    <button class="gate-btn" onclick="checkGate3()">enter</button>
+  </div>
+
   <!-- thoughts panel -->
   <div id="thoughts-panel">
     <div class="panel-header" id="panel-header">thoughts</div>
@@ -526,7 +535,7 @@
 <!-- Firebase -->
 <script type="module">
   import { initializeApp }      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getDatabase, ref, onValue, push, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyA96e5SPjrjwQfM0wTYIWmN17fwmllQjsw",
@@ -566,7 +575,7 @@
   }
 
   window.loadHisThoughts = () => {
-    onValue(ref(db, 'notes'), snap => {
+    get(ref(db, 'notes')).then(snap => {
       const listEl = document.getElementById('his-list');
       const data   = snap.val();
       if (!data) { listEl.innerHTML = '<div class="empty-state">please wait…</div>'; return; }
@@ -623,12 +632,14 @@
 
       document.getElementById('panel-header').textContent =
         `${entries.length} thought${entries.length !== 1 ? 's' : ''}`;
+    }).catch(e => {
+      document.getElementById('his-list').innerHTML = '<div class="empty-state">could not load — check firebase rules</div>';
     });
   };
 
   // load g
   window.loadHerNotes = () => {
-    onValue(ref(db, 'hernotes'), snap => {
+    get(ref(db, 'hernotes')).then(snap => {
       const listEl = document.getElementById('her-list');
       const data   = snap.val();
       if (!data) { listEl.innerHTML = '<div class="empty-state">please wait…</div>'; return; }
@@ -642,6 +653,8 @@
           <div class="her-note-text">${e.text}</div>
         </div>`;
       }).join('');
+    }).catch(e => {
+      document.getElementById('her-list').innerHTML = '<div class="empty-state">could not load — check firebase rules</div>';
     });
   };
 
@@ -660,6 +673,7 @@
 <script>
   const GATE1    = "291208";
   const GATE2    = "jupiter";
+  const GATE3    = "tomato";
   const WEBHOOK  = "https://discord.com/api/webhooks/1488847895003271168/i7dC3ruDDWURIyjUtS5GtLr7vXXgRmuphgZim944c3D0fBz_Mp_Ol5N_d1KPpUfotWtC";
 
   function openModal() {
@@ -779,8 +793,41 @@
     setTimeout(() => document.getElementById('her-note-input').focus(), 50);
   }
 
+  function checkGate3() {
+    const val = document.getElementById('g3-input').value.trim().toLowerCase();
+    if (val === GATE3) {
+      const inp3  = document.getElementById('g3-input');
+      const g3    = document.getElementById('gate3');
+      const panel = document.getElementById('thoughts-panel');
+      inp3.classList.add('success');
+      window.loadHisThoughts();
+      window.loadHerNotes();
+      setTimeout(() => {
+        g3.classList.add('fade-out');
+        setTimeout(() => {
+          g3.style.display = 'none';
+          g3.classList.remove('fade-out');
+          inp3.classList.remove('success');
+          panel.style.display = 'flex';
+          document.getElementById('overlay').classList.add('panel-open');
+          panel.style.opacity = '0';
+          panel.style.transform = 'translateY(14px)';
+          panel.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+          void panel.offsetWidth;
+          panel.style.opacity = '1';
+          panel.style.transform = 'translateY(0)';
+        }, 380);
+      }, 500);
+    } else {
+      const err = document.getElementById('g3-error');
+      err.textContent = 'wrong.';
+      setTimeout(() => err.textContent = '', 1500);
+    }
+  }
+
   document.getElementById('g1-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkGate1(); });
   document.getElementById('g2-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkGate2(); });
+  document.getElementById('g3-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkGate3(); });
   document.getElementById('her-note-input').addEventListener('keydown', e => {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.saveHerNote(); }
   });
