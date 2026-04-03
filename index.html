@@ -500,14 +500,14 @@
     <!-- y tab -->
     <div class="tab-content active" id="tab-his">
       <div class="thoughts-scroll" id="his-list">
-        <div class="empty-state">nothing yet…</div>
+        <div class="empty-state">please wait…</div>
       </div>
     </div>
 
     <!-- g tab -->
     <div class="tab-content" id="tab-hers">
       <div class="thoughts-scroll" id="her-list">
-        <div class="empty-state">nothing yet…</div>
+        <div class="empty-state">please wait…</div>
       </div>
       <div class="add-note-bar">
         <button class="add-note-toggle" onclick="toggleNoteForm()">ADD A NOTE</button>
@@ -569,7 +569,7 @@
     onValue(ref(db, 'notes'), snap => {
       const listEl = document.getElementById('his-list');
       const data   = snap.val();
-      if (!data) { listEl.innerHTML = '<div class="empty-state">nothing yet…</div>'; return; }
+      if (!data) { listEl.innerHTML = '<div class="empty-state">please wait…</div>'; return; }
 
       const entries = Object.values(data).sort((a,b) => new Date(a.ts) - new Date(b.ts));
 
@@ -631,7 +631,7 @@
     onValue(ref(db, 'hernotes'), snap => {
       const listEl = document.getElementById('her-list');
       const data   = snap.val();
-      if (!data) { listEl.innerHTML = '<div class="empty-state">nothing yet…</div>'; return; }
+      if (!data) { listEl.innerHTML = '<div class="empty-state">please wait…</div>'; return; }
       const entries = Object.values(data).sort((a,b) => new Date(b.ts) - new Date(a.ts));
       listEl.innerHTML = entries.map(e => {
         const d = new Date(e.ts);
