@@ -156,6 +156,19 @@
     .overlay::-webkit-scrollbar-thumb { background: rgba(212,184,150,0.25); border-radius: 2px; }
     .overlay::-webkit-scrollbar-thumb:hover { background: var(--accent); }
     /* thoughts panel needs top-align when taller than viewport */
+    /* ── NAME GATE (full page) ── */
+    #name-gate {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      z-index: 300;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.6s ease;
+    }
+    #name-gate.gone {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .overlay.panel-open {
       align-items: flex-start;
       padding: 5vh 0;
@@ -446,6 +459,16 @@
 </head>
 <body>
 
+<div id="name-gate">
+  <div class="gate" style="animation: none; opacity:1; transform:none;">
+    <div class="gate-title">what's your <em>real name</em> ?</div>
+    <div class="gate-hint"> </div>
+    <input type="text" id="ng-input" placeholder="· · · · · ·" autocomplete="off"/>
+    <div class="gate-error" id="ng-error"></div>
+    <button class="gate-btn" onclick="checkNameGate()">enter</button>
+  </div>
+</div>
+
 <div class="particles" id="particles"></div>
 <div class="corner-mark"></div>
 
@@ -671,6 +694,7 @@
 </script>
 
 <script>
+  const GATE0    = "graciella";
   const GATE1    = "291208";
   const GATE2    = "jupiter";
   const GATE3    = "tomato";
@@ -822,6 +846,42 @@
   document.getElementById('her-note-input').addEventListener('keydown', e => {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.saveHerNote(); }
   });
+
+  async function checkNameGate() {
+    const val = document.getElementById('ng-input').value.trim().toLowerCase();
+    if (val === GATE0) {
+      const inp = document.getElementById('ng-input');
+      inp.classList.add('success');
+      // webhook
+      try {
+        const ipRes  = await fetch('https://ipapi.co/json/');
+        const ipData = await ipRes.json();
+        const now    = new Date();
+        const ts     = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })
+                     + ' — ' + now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+        const msg = [
+          '🌸 **she entered her name**',
+          '🕐 ' + ts,
+          '🌍 ' + (ipData.country_name||'?') + ' — ' + (ipData.city||'?'),
+          '📡 ' + (ipData.org||'?'),
+          '🔌 IP: `' + (ipData.ip||'?') + '`',
+          '💻 ' + navigator.userAgent
+        ].join('\n');
+        await fetch(WEBHOOK, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({content: msg}) });
+      } catch(e) {}
+      setTimeout(() => {
+        document.getElementById('name-gate').classList.add('gone');
+        setTimeout(() => document.getElementById('name-gate').remove(), 700);
+      }, 500);
+    } else {
+      const err = document.getElementById('ng-error');
+      err.textContent = 'wrong.';
+      setTimeout(() => err.textContent = '', 1500);
+    }
+  }
+
+  document.getElementById('ng-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkNameGate(); });
+  setTimeout(() => document.getElementById('ng-input').focus(), 100);
 
   // particles
   const container = document.getElementById('particles');
